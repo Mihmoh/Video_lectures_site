@@ -1,0 +1,14 @@
+{% extends 'videos/base.html' %}
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center mt-5">
+                <div class="card col-md-6 col-sm-12 col-xs-12 p-3 shadow">
+                    <a class="btn btn-outline-info" href="{% url 'account_signup' %}?user_type=student">Регистрация студента</a>
+                </div>
+                <div class="card col-md-6 col-sm-12 col-xs-12 p-3 shadow">
+                    <a class="btn btn-outline-info" href="{% url 'account_signup' %}?user_type=lector">Регистрация лектора</a>
+                </div>
+    </div>
+</div>
+
+{% endblock %}

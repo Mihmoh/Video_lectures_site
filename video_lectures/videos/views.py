@@ -1,4 +1,5 @@
-from django.shortcuts import render, reverse
+from django.shortcuts import render, reverse, redirect
+from django.views.generic import TemplateView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from .models import Video, Comment, Category
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
@@ -19,17 +20,22 @@ class CreateVideo(LoginRequiredMixin, CreateView):
     fields = ['title', 'description', 'video_file', 'thumbnail', 'category']
     template_name = 'videos/create_video.html'
 
+    def dispatch(self, request, *args, **kwargs):
+        user_type = str(request.user.profile.user_type)
+        # print(user_type)
+        # print(user_type == 'Лектор')
+        if user_type != 'Лектор':
+            return redirect('not-lector')
+        else:
+            return super().dispatch(request, *args, **kwargs)
+
     def form_valid(self, form):
         form.instance.uploader = self.request.user
         return super().form_valid(form)
 
+
     def get_success_url(self):
         return reverse('video-detail', kwargs={'pk': self.object.pk})
-
-
-# class DetailVideo(DetailView):
-#     model = Video
-#     template_name = 'videos/detail_video.html'
 
 
 class DetailVideo(View):
@@ -120,3 +126,13 @@ class SearchVideo(View):
         }
 
         return render(request, 'videos/search.html', context)
+
+
+class RegistrationChoiceView(View):
+    def get(self, request):
+
+        return render(request, 'videos/registration_choice.html')
+
+
+class NotLectorView(TemplateView):
+    template_name = 'videos/not_lector.html'

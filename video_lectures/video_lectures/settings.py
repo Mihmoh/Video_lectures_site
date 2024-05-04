@@ -164,4 +164,6 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 LOGIN_REDIRECT_URL = 'index'
 
 #Additions to sign up form
-ACCOUNT_SIGNUP_FORM_CLASS = 'profiles.forms.ProfileForm'
+ACCOUNT_SIGNUP_FORM_CLASS = 'profiles.forms.RegistrationForm'
+
+# ACCOUNT_ADAPTER = 'profiles.adapters.CustomAccountAdapter'
