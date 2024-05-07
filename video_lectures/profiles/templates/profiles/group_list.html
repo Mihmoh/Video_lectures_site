@@ -1,0 +1,21 @@
+{% extends 'videos/base.html'%}
+
+{% block content %}
+    <div class="container">
+		<div class="row justify-content-center mt-5">
+			<div class="card col-md-6 col-sm-12 col-xs-12 p-3 shadow">
+            	<h5>Список групп:</h5>
+			</div>
+		</div>
+		<div class="row justify-content-center">
+
+			{% for object in groups %}
+			<div class="card col-md-2 col-sm-12 mr-md-2 mt-5 p-3 border-1">
+				<div class="card-body">
+					<a class="link-text" href="{% url 'group' object.pk %}"><h5 class="text-center">{{ object.name }}</h5></a>
+				</div>
+			</div>
+			{% endfor %}
+		</div>
+	</div>
+{% endblock content%}

@@ -19,29 +19,17 @@ class Profile(models.Model):
     name = models.CharField(max_length=100, blank=True)
     surname = models.CharField(max_length=100, blank=True)
     patronymic = models.CharField(max_length=100, blank=True)
-    subjects = models.ManyToManyField('Subject')
-    groups = models.ManyToManyField('Group')
+    subjects = models.ManyToManyField('Subject', blank=True)
+    student_group = models.ForeignKey('Group', on_delete=models.SET_NULL, null=True, related_name='student', blank=True)
     image = models.ImageField(upload_to='uploads/profile_pics', blank=True)
 
     def __str__(self):
         return f'{self.user.username} Profile'
 
 
-# class Lector(models.Model):
-#     user = models.OneToOneField(User, on_delete=models.CASCADE)
-#     name = models.CharField(max_length=100, blank=True)
-#     surname = models.CharField(max_length=100, blank=True)
-#     patronymic = models.CharField(max_length=100, blank=True)
-#     subjects = models.ManyToManyField('Subject')
-#     groups = models.ManyToManyField('Group')
-#     image = models.ImageField(upload_to='uploads/profile_pics', blank=True)
-#
-#     def __str__(self):
-#         return f'{self.user.username} Лектор'
-
-
 class Group(models.Model):
     name = models.CharField(max_length=100)
+    lector = models.ForeignKey(Profile, on_delete=models.SET_NULL, null=True, related_name='lector_groups', blank=True)
 
     class Meta:
         verbose_name = "Group"

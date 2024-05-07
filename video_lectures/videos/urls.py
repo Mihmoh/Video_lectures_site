@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.urls import path
 from .views import CreateVideo, DetailVideo, UpdateVideo, DeleteVideo, VideoCategoryList, SearchVideo, RegistrationChoiceView, NotLectorView
-from profiles.views import ProfileListView
+from profiles.views import ProfileListView, GroupListView
 
 urlpatterns = [
     path('create/', CreateVideo.as_view(), name='video-create'),
@@ -13,5 +13,6 @@ urlpatterns = [
     path('registration-choice/', RegistrationChoiceView.as_view(), name='registration-choice'),
     path('not_lector/', NotLectorView.as_view(), name='not-lector'),
     path('profiles/', ProfileListView.as_view(), name='profile-list'),
+    path('profiles/groups', GroupListView.as_view(), name='group-list'),
 
 ]

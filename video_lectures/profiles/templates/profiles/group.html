@@ -1,0 +1,18 @@
+{% extends 'videos/base.html' %}
+
+{% block content %}
+<div class="container">
+
+    <div class="row justify-content-center mt-5">
+        <div class="card col-md-6 col-sm-12 col-xs-12 p-3 shadow">
+            <h5>Название группы: {{ group.name }}</h5>
+            <h5><a class="link-text" href="{% url 'profile' group.lector.pk %}">Лектор: {{ group.lector.surname }} {{ group.lector.name }} {{ group.lector.patronymic }}</a></h5>
+            <h5>Студенты: </h5>
+            {% for student in students %}
+                <h6><a class="link-text" href="{% url 'profile' student.pk %}"> {{ student.surname }} {{ student.name }} {{ student.patronymic }}</a> </h6>
+            {% endfor %}
+        </div>
+    </div>
+
+</div>
+{% endblock %}

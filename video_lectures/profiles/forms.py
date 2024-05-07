@@ -18,7 +18,6 @@ class RegistrationForm(forms.Form):
 
     def signup(self, request, user):
         user.save()
-
         profile = Profile()
         profile.user = user
         profile.name = self.cleaned_data['name']
