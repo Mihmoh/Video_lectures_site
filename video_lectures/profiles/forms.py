@@ -1,6 +1,7 @@
 from django import forms
 from .models import Profile, Subject, Group, UserType
 from django.contrib.auth.models import User
+from django.db.models import Q
 
 
 class RegistrationForm(forms.Form):
@@ -27,4 +28,55 @@ class RegistrationForm(forms.Form):
         profile.image = self.cleaned_data['image']
         profile.save()
 
+
+# class GroupForm(forms.ModelForm):
+#
+#     search_query = forms.CharField(
+#         label='Поиск студентов',
+#         required=False,
+#         widget=forms.TextInput(attrs={'placeholder': 'Введите имя или фамилию студента'})
+#     )
+#
+#     queryset = Profile.objects.filter(user_type__name='Студент')
+#
+#     students = forms.ModelMultipleChoiceField(
+#         queryset=queryset,
+#         widget=forms.CheckboxSelectMultiple,
+#         required=False
+#     )
+#
+#     apply_search = forms.BooleanField(
+#         label='Применить поиск',
+#         required=False
+#     )
+#
+#     class Meta:
+#         model = Group
+#         fields = ['name', 'lector', 'students', 'apply_search']
+#
+#     def __init__(self, *args, **kwargs):
+#         super().__init__(*args, **kwargs)
+#         self.fields['students'].queryset = Profile.objects.filter(user_type__name='Студент')
+#
+#         search_query = self.data.get('search_query')
+#         apply_search = self.data.get('apply_search')
+#
+#         if apply_search and search_query:
+#             self.fields['students'].queryset = self.fields['students'].queryset.filter(
+#                 Q(surname__icontains=search_query) | Q(name__icontains=search_query)
+#             )
+
+
+class GroupForm(forms.ModelForm):
+    queryset = Profile.objects.filter(user_type__name='Студент')
+
+    students = forms.ModelMultipleChoiceField(
+        queryset=queryset.order_by('student_group', 'surname', 'name'),
+        widget=forms.CheckboxSelectMultiple,
+        required=False
+    )
+
+    class Meta:
+        model = Group
+        fields = ['name', 'lector', 'students']
 

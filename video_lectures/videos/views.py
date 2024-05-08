@@ -1,7 +1,7 @@
 from django.shortcuts import render, reverse, redirect
 from django.views.generic import TemplateView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
-from .models import Video, Comment, Category
+from .models import Video, Comment, Category, Course
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views.generic.list import ListView
 from django.views import View
@@ -136,3 +136,34 @@ class RegistrationChoiceView(View):
 
 class NotLectorView(TemplateView):
     template_name = 'videos/not_lector.html'
+
+
+class CourseView(View):
+
+    def get(self, request, pk, *args, **kwargs):
+        user = request.user
+        can_edit = False
+        if hasattr(user, 'profile'):
+            profile = user.profile
+            user_type = str(profile.user_type)
+            if user_type == 'Лектор':
+                can_edit = True
+        else:
+            can_edit = False
+        course = Course.objects.get(pk=pk)
+        videos = course.course_videos.all().order_by('title')
+
+        context = {
+            'course': course,
+            'videos': videos,
+            'can_edit': can_edit,
+        }
+
+        return render(request, 'videos/course.html', context)
+
+
+class CourseListView(ListView):
+    model = Course
+    template_name = 'videos/course_list.html'
+    queryset = Course.objects.all()
+    context_object_name = 'courses'

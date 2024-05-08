@@ -1,0 +1,35 @@
+{% extends 'videos/base.html' %}
+
+{% block content %}
+<div class="container">
+
+    <div class="row justify-content-center mt-5">
+        <div class="card col-md-6 col-sm-12 col-xs-12 p-3 shadow">
+            <h5>Название курса: {{ course.name }}</h5>
+            <h5>Лектор: </h5>
+            {% if course.lector.pk %}
+                <h5><a class="link-text" href="{% url 'profile' course.lector.pk %}"> {{ course.lector.surname }} {{ course.lector.name }} {{ course.lector.patronymic }}</a></h5>
+            {% endif %}
+            <h5>Предмет: </h5>
+            {% if course.subject.pk %}
+                <h5><a class="link-text" href="{% url 'subject' course.subject.pk %}"> {{ course.subject.name }} </a></h5>
+            {% endif %}
+            <h5>Видео этого курса: </h5>
+        </div>
+    </div>
+
+    <div class="row justify-content-center">
+			{% for object in videos %}
+			<div class="card col-md-3 col-sm-12 mr-md-2 mt-5 p-3 border-0">
+				<a href="{% url 'video-detail' object.pk %}"><img src="/media/{{ object.thumbnail }}" width="256" height="144"></a>
+				<div class="card-body">
+					<a class="link-text" href="{% url 'video-detail' object.pk %}"><h5 class="text-center">{{ object.title }}</h5></a>
+					<p class="text-muted text-center m-0">{{ object.uploader }}</p>
+					<p class="text-muted text-center">{{ object.date_posted | date:"M d, Y" }}</p>
+				</div>
+			</div>
+			{% endfor %}
+    </div>
+
+</div>
+{% endblock %}

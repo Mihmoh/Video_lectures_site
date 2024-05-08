@@ -2,6 +2,7 @@ from django.db import models
 from django.utils import timezone
 from django.core.validators import FileExtensionValidator
 from django.contrib.auth.models import User
+from profiles.models import Profile, Subject
 
 
 class Video(models.Model):
@@ -11,7 +12,8 @@ class Video(models.Model):
     video_file = models.FileField(upload_to='uploads/video_files', validators=[FileExtensionValidator(allowed_extensions=['mp4'])])
     thumbnail = models.FileField(upload_to='uploads/thumbnails', validators=[FileExtensionValidator(allowed_extensions=['png', 'jpg', 'jpeg'])])
     date_posted = models.DateTimeField(default=timezone.now)
-    category = models.ForeignKey('Category', on_delete=models.CASCADE)
+    category = models.ForeignKey('Category', on_delete=models.SET_NULL, null=True, blank=True)
+    course = models.ForeignKey('Course', on_delete=models.SET_NULL, null=True, related_name='course_videos', blank=True)
 
 
 class Category(models.Model):
@@ -33,3 +35,13 @@ class Comment(models.Model):
 
     def __str__(self):
         return f'User: {self.user} | Created on: {self.created_on.strftime("%b %d %Y %I:%M %p")}'
+
+
+class Course(models.Model):
+    name = models.CharField(max_length=100)
+    lector = models.ForeignKey(Profile, on_delete=models.SET_NULL, null=True, related_name='lector_courses', blank=True)
+    subject = models.ForeignKey(Subject, on_delete=models.SET_NULL, null=True, related_name='subject_courses', blank=True)
+
+    def __str__(self):
+        return self.name
+

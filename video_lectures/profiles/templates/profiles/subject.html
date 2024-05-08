@@ -1,0 +1,17 @@
+{% extends 'videos/base.html' %}
+
+{% block content %}
+<div class="container">
+
+    <div class="row justify-content-center mt-5">
+        <div class="card col-md-6 col-sm-12 col-xs-12 p-3 shadow">
+            <h5>Название предмета: {{ subject.name }}</h5>
+            <h5>Лекторы: </h5>
+            {% for lector in lectors %}
+                <h6><a class="link-text" href="{% url 'profile' lector.pk %}"> {{ lector.surname }} {{ lector.name }} {{ lector.patronymic }} </a></h6>
+            {% endfor %}
+        </div>
+    </div>
+
+</div>
+{% endblock %}

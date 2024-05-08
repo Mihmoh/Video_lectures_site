@@ -16,11 +16,10 @@
             <h5>Отчество: {{ profile.patronymic }}</h5>
             <h5>Тип профиля: {{ profile.user_type }}</h5>
             {% if user_type == 'Лектор' %}
-                {% if has_subjects %}
-                    <h5>Предметы: {{ profile.subjects }}</h5>
-                {% else %}
-                    <h5>Предметы: не назначено</h5>
-                {% endif %}
+                <h5>Предметы: </h5>
+                {% for subject in subjects %}
+            <h6><a class="link-text" href="{% url 'subject' subject.pk %}"> {{ subject.name }} </a></h6>
+                {% endfor %}
                 <h5>Группы: </h5>
                 {% for group in groups %}
             <h6><a class="link-text" href="{% url 'group' group.pk %}"> {{ group.name }} </a></h6>
@@ -28,7 +27,9 @@
             {% endif %}
             {% if user_type == 'Студент' %}
                 <h5>Группа студента: </h5>
-                <h6><a class="link-text" href="{% url 'group' profile.student_group.pk %}">{{ profile.student_group }} </a></h6>
+                {% if profile.student_group.pk %}
+                    <h6><a class="link-text" href="{% url 'group' profile.student_group.pk %}">{{ profile.student_group }} </a></h6>
+                {% endif %}
             {% endif %}
         </div>
     </div>
@@ -41,24 +42,28 @@
         </div>
     {% endif %}
 
-    <div class="row justify-content-center mt-5">
-        <div class="card col-md-6 col-sm-12 col-xs-12 p-3 shadow">
-            <h5>Загруженные видео: </h5>
-        </div>
-    </div>
+    {% if user_type == 'Лектор' %}
 
-    <div class="row justify-content-center my-5">
-
-        {% for video in videos %}
-        <div class="card col-md-3 col-sm-12 col-xs-12 p-3 shadow mr-md-3 my-3">
-            <img src="{{ video.thumbnail.url }}" class="card-img-top pt-2" alt="thumbnail">
-                <div class="card-body">
-                    <h5 class="card-title text-center">{{ video.title }}</h5>
-                    <p class="card-text text-muted text-center"><span class="mr-4">{{ video.uploader }}</span><span>{{ video.date_posted | date:"M d, Y" }}</span></p>
-                    <a href="{% url 'video-detail' video.pk %}" class="stretched-link"></a>
-                </div>
+        <div class="row justify-content-center mt-5">
+            <div class="card col-md-6 col-sm-12 col-xs-12 p-3 shadow">
+                <h5>Загруженные видео: </h5>
+            </div>
         </div>
-        {% endfor %}
-    </div>
+
+        <div class="row justify-content-center my-5">
+
+            {% for video in videos %}
+            <div class="card col-md-3 col-sm-12 col-xs-12 p-3 shadow mr-md-3 my-3">
+                <img src="{{ video.thumbnail.url }}" class="card-img-top pt-2" alt="thumbnail">
+                    <div class="card-body">
+                        <h5 class="card-title text-center">{{ video.title }}</h5>
+                        <p class="card-text text-muted text-center"><span class="mr-4">{{ video.uploader }}</span><span>{{ video.date_posted | date:"M d, Y" }}</span></p>
+                        <a href="{% url 'video-detail' video.pk %}" class="stretched-link"></a>
+                    </div>
+            </div>
+            {% endfor %}
+        </div>
+
+    {% endif %}
 </div>
 {% endblock %}
