@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.urls import path
-from .views import CreateVideo, DetailVideo, UpdateVideo, DeleteVideo, VideoCategoryList, SearchVideo, RegistrationChoiceView, NotLectorView, CourseView, CourseListView
+from .views import CreateVideo, DetailVideo, UpdateVideo, DeleteVideo, VideoCategoryList, SearchVideo, RegistrationChoiceView, NotLectorView, CourseView, CourseListView, UpdateCourse, CreateCourse
 from profiles.views import ProfileListView, GroupListView, SubjectListView
 
 urlpatterns = [
@@ -16,6 +16,8 @@ urlpatterns = [
     path('profiles/groups', GroupListView.as_view(), name='group-list'),
     path('profiles/subjects', SubjectListView.as_view(), name='subject-list'),
     path('courses/<int:pk>', CourseView.as_view(), name='course'),
-    path('courses', CourseListView.as_view(), name='course-list')
+    path('courses', CourseListView.as_view(), name='course-list'),
+    path('courses/create', CreateCourse.as_view(), name='course-create'),
+    path('courses/<int:pk>/update', UpdateCourse.as_view(), name='update-course'),
 
 ]

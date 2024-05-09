@@ -29,44 +29,6 @@ class RegistrationForm(forms.Form):
         profile.save()
 
 
-# class GroupForm(forms.ModelForm):
-#
-#     search_query = forms.CharField(
-#         label='Поиск студентов',
-#         required=False,
-#         widget=forms.TextInput(attrs={'placeholder': 'Введите имя или фамилию студента'})
-#     )
-#
-#     queryset = Profile.objects.filter(user_type__name='Студент')
-#
-#     students = forms.ModelMultipleChoiceField(
-#         queryset=queryset,
-#         widget=forms.CheckboxSelectMultiple,
-#         required=False
-#     )
-#
-#     apply_search = forms.BooleanField(
-#         label='Применить поиск',
-#         required=False
-#     )
-#
-#     class Meta:
-#         model = Group
-#         fields = ['name', 'lector', 'students', 'apply_search']
-#
-#     def __init__(self, *args, **kwargs):
-#         super().__init__(*args, **kwargs)
-#         self.fields['students'].queryset = Profile.objects.filter(user_type__name='Студент')
-#
-#         search_query = self.data.get('search_query')
-#         apply_search = self.data.get('apply_search')
-#
-#         if apply_search and search_query:
-#             self.fields['students'].queryset = self.fields['students'].queryset.filter(
-#                 Q(surname__icontains=search_query) | Q(name__icontains=search_query)
-#             )
-
-
 class GroupForm(forms.ModelForm):
     queryset = Profile.objects.filter(user_type__name='Студент')
 
@@ -79,4 +41,16 @@ class GroupForm(forms.ModelForm):
     class Meta:
         model = Group
         fields = ['name', 'lector', 'students']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['lector'].queryset = Profile.objects.filter(user_type__name='Лектор')
+        if self.instance.pk:
+            self.fields['students'].initial = self.instance.student.values_list('pk', flat=True)
+
+    def save(self, commit=True):
+        group = super().save(commit=commit)
+        if commit:
+            group.student.set(self.cleaned_data['students'])
+        return group
 

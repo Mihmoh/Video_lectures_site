@@ -2,8 +2,32 @@
 
 {% block content %}
     <div class="container">
+
+        <div class="row justify-content-center mt-5">
+			<div class="card col-md-6 col-sm-12 col-xs-12 p-3 shadow">
+            	<h5>Найденные курсы:</h5>
+			</div>
+		</div>
+
+		<div class="row justify-content-center">
+
+			{% for object in query_courses %}
+			<div class="card col-md-3 col-sm-12 mr-md-2 mt-5 p-3 border-1">
+				<div class="card-body">
+					<a class="link-text" href="{% url 'course' object.pk %}"><h5 class="text-center">{{ object.name }}</h5></a>
+				</div>
+			</div>
+			{% endfor %}
+		</div>
+
+        <div class="row justify-content-center mt-5">
+			<div class="card col-md-6 col-sm-12 col-xs-12 p-3 shadow">
+            	<h5>Найденные видео:</h5>
+			</div>
+		</div>
+
         <div class="row justify-content-center">
-            {% for object in query_list %}
+            {% for object in query_video %}
             <div class="card col-md-3 col-sm-12 mr-md-2 mt-5 p-3 border-0">
                 <a href="{% url 'video-detail' object.pk %}"><img src="/media/{{ object.thumbnail }}" width="256" height="144"></a>
                 <div class="card-body">
@@ -14,5 +38,58 @@
             </div>
             {% endfor %}
         </div>
+
+        <div class="row justify-content-center mt-5">
+			<div class="card col-md-6 col-sm-12 col-xs-12 p-3 shadow">
+            	<h5>Найденные профили:</h5>
+			</div>
+		</div>
+
+		<div class="row justify-content-center">
+			{% for object in query_profiles %}
+					<div class="card col-md-2 col-sm-12 mr-md-2 mt-5 p-3 border-0">
+						<a href="{% url 'profile' object.pk %}"><img src="/media/{{ object.image }}" width="144" height="144"></a>
+						<div class="card-body">
+							<a class="link-text" href="{% url 'profile' object.pk %}"><h5 class="text-center">{{ object.surname }}</h5></a>
+							<a class="link-text" href="{% url 'profile' object.pk %}"><h5 class="text-center">{{ object.name }}</h5></a>
+                            <a class="link-text" href="{% url 'profile' object.pk %}"><h5 class="text-center">{{ object.patronymic }}</h5></a>
+							<p class="text-muted text-center m-0">{{ object.user_type }}</p>
+						</div>
+					</div>
+			{% endfor %}
+		</div>
+
+        <div class="row justify-content-center mt-5">
+			<div class="card col-md-6 col-sm-12 col-xs-12 p-3 shadow">
+            	<h5>Найденные группы:</h5>
+			</div>
+		</div>
+		<div class="row justify-content-center">
+
+			{% for object in query_groups %}
+			<div class="card col-md-2 col-sm-12 mr-md-2 mt-5 p-3 border-1">
+				<div class="card-body">
+					<a class="link-text" href="{% url 'group' object.pk %}"><h5 class="text-center">{{ object.name }}</h5></a>
+				</div>
+			</div>
+			{% endfor %}
+		</div>
+
+        <div class="row justify-content-center mt-5">
+			<div class="card col-md-6 col-sm-12 col-xs-12 p-3 shadow">
+            	<h5>Найденные предметы:</h5>
+			</div>
+		</div>
+		<div class="row justify-content-center">
+
+			{% for object in query_subjects %}
+			<div class="card col-md-3 col-sm-12 mr-md-2 mt-5 p-3 border-1">
+				<div class="card-body">
+					<a class="link-text" href="{% url 'subject' object.pk %}"><h5 class="text-center">{{ object.name }}</h5></a>
+				</div>
+			</div>
+			{% endfor %}
+		</div>
+
     </div>
 {% endblock content %}

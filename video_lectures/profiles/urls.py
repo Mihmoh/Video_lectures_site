@@ -1,5 +1,6 @@
 from .views import ProfileView, UpdateProfile, ProfileListView, GroupView, GroupListView, UpdateGroup, SubjectView, SubjectListView
 from django.urls import path
+from videos.views import CreateCourse
 
 urlpatterns = [
     path('<int:pk>/', ProfileView.as_view(), name='profile'),
@@ -10,6 +11,7 @@ urlpatterns = [
     path('groups/<int:pk>/update', UpdateGroup.as_view(), name='update-group'),
     path('subjects/<int:pk>', SubjectView.as_view(), name='subject'),
     path('subjects/', SubjectListView.as_view(), name='subject-list'),
+    path('courses/create', CreateCourse.as_view(), name='course-create'),
 
 
 ]

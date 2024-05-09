@@ -16,6 +16,7 @@
 						<div class="card-body">
 							<a class="link-text" href="{% url 'profile' object.pk %}"><h5 class="text-center">{{ object.surname }}</h5></a>
 							<a class="link-text" href="{% url 'profile' object.pk %}"><h5 class="text-center">{{ object.name }}</h5></a>
+							<a class="link-text" href="{% url 'profile' object.pk %}"><h5 class="text-center">{{ object.patronymic }}</h5></a>
 							<p class="text-muted text-center m-0">{{ object.user_type }}</p>
 						</div>
 					</div>

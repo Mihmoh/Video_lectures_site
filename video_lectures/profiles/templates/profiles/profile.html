@@ -40,9 +40,33 @@
                 <a class="btn btn-outline-info" href="{% url 'update-profile' profile.pk %}">Редактировать профиль</a>
             </div>
         </div>
+
+        <div class="row justify-content-center mt-5">
+            <div class="card col-md-6 col-sm-12 col-xs-12 p-3 shadow">
+                <a class="btn btn-outline-info" href="{% url 'course-create' %}">Создать курс</a>
+            </div>
+        </div>
     {% endif %}
 
     {% if user_type == 'Лектор' %}
+
+        <div class="row justify-content-center mt-5">
+            <div class="card col-md-6 col-sm-12 col-xs-12 p-3 shadow">
+                <h5>Курсы лектора: </h5>
+            </div>
+        </div>
+
+        <div class="row justify-content-center my-5">
+
+            {% for object in courses %}
+                <div class="card col-md-3 col-sm-12 mr-md-2 mt-5 p-3 border-1">
+                    <div class="card-body">
+                        <a class="link-text" href="{% url 'course' object.pk %}"><h5 class="text-center">{{ object.name }}</h5></a>
+                    </div>
+                </div>
+            {% endfor %}
+
+        </div>
 
         <div class="row justify-content-center mt-5">
             <div class="card col-md-6 col-sm-12 col-xs-12 p-3 shadow">
@@ -57,11 +81,12 @@
                 <img src="{{ video.thumbnail.url }}" class="card-img-top pt-2" alt="thumbnail">
                     <div class="card-body">
                         <h5 class="card-title text-center">{{ video.title }}</h5>
-                        <p class="card-text text-muted text-center"><span class="mr-4">{{ video.uploader }}</span><span>{{ video.date_posted | date:"M d, Y" }}</span></p>
+                        <p class="card-text text-muted text-center"><span class="mr-4">{{ video.lector.surname }} {{ video.lector.name }} {{ video.lector.patronymic }}</span><span>{{ video.date_posted | date:"M d, Y" }}</span></p>
                         <a href="{% url 'video-detail' video.pk %}" class="stretched-link"></a>
                     </div>
             </div>
             {% endfor %}
+
         </div>
 
     {% endif %}

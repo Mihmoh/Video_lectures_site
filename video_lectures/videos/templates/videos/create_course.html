@@ -8,7 +8,7 @@
 		<div class="col-md-6 col-sm-12 col-xs-12">
 			<form method="POST" enctype="multipart/form-data">
 				{% csrf_token %}
-				<legend class="border-bottom mb-4">Загрузить видео</legend>
+				<legend class="border-bottom mb-4">Создание курса</legend>
 				{{ form | crispy }}
 				<button class="btn btn-outline-info btn-block mt-3" type="submit">Подтвердить</button>
 			</form>

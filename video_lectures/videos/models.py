@@ -7,13 +7,17 @@ from profiles.models import Profile, Subject
 
 class Video(models.Model):
     uploader = models.ForeignKey(User, on_delete=models.CASCADE)
+    lector = models.ForeignKey(Profile, on_delete=models.SET_NULL, null=True, related_name='lector_videos')
     title = models.CharField(max_length=100)
-    description = models.TextField()
+    description = models.TextField(blank=True)
     video_file = models.FileField(upload_to='uploads/video_files', validators=[FileExtensionValidator(allowed_extensions=['mp4'])])
     thumbnail = models.FileField(upload_to='uploads/thumbnails', validators=[FileExtensionValidator(allowed_extensions=['png', 'jpg', 'jpeg'])])
     date_posted = models.DateTimeField(default=timezone.now)
     category = models.ForeignKey('Category', on_delete=models.SET_NULL, null=True, blank=True)
     course = models.ForeignKey('Course', on_delete=models.SET_NULL, null=True, related_name='course_videos', blank=True)
+
+    def __str__(self):
+        return self.title
 
 
 class Category(models.Model):

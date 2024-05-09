@@ -55,9 +55,10 @@ class ProfileView(View):
 
     def get(self, request, pk, *args, **kwargs):
         profile = get_object_or_404(Profile, pk=pk)
-        videos = Video.objects.all().filter(uploader=profile.user).order_by('-date_posted')
+        videos = Video.objects.all().filter(uploader=profile.user).order_by('title')
         groups = profile.lector_groups.all()
         subjects = profile.subjects.all()
+        courses = profile.lector_courses.all()
         user_type = str(profile.user_type)
         if profile.user == request.user:
             can_edit = True
@@ -71,6 +72,7 @@ class ProfileView(View):
             'groups': groups,
             'user_type': user_type,
             'subjects': subjects,
+            'courses': courses,
         }
 
         return render(request, 'profiles/profile.html', context)
@@ -114,11 +116,13 @@ class SubjectView(View):
             can_edit = False
         subject = Subject.objects.get(pk=pk)
         lectors = subject.profile_subjects.all().order_by('surname', 'name')
+        courses = subject.subject_courses.all().order_by('name')
 
         context = {
             'subject': subject,
             'lectors': lectors,
             'can_edit': can_edit,
+            'courses': courses,
         }
 
         return render(request, 'profiles/subject.html', context)
