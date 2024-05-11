@@ -8,6 +8,7 @@ from django.views import View
 from .forms import CommentForm, CourseForm
 from django.db.models import Q
 from profiles.models import Profile, Group, Subject
+from django.http import FileResponse
 
 
 class Index(ListView):
@@ -18,7 +19,7 @@ class Index(ListView):
 
 class CreateVideo(LoginRequiredMixin, CreateView):
     model = Video
-    fields = ['title', 'description', 'lector', 'video_file', 'thumbnail', 'category']
+    fields = ['title', 'description', 'lector', 'video_file', 'thumbnail', 'category', 'pdf_file']
     template_name = 'videos/create_video.html'
 
     def dispatch(self, request, *args, **kwargs):
@@ -43,6 +44,11 @@ class DetailVideo(View):
         comments = Comment.objects.filter(video=video).order_by('-created_on')
         categories = Video.objects.filter(category=video.category)[:15]
         course_videos = Video.objects.filter(course=video.course)[:15]
+        pdf_file = None
+
+        if video.pdf_file:
+            pdf_file = video.pdf_file
+
         context = {
             'object': video,
             'comments': comments,
@@ -50,6 +56,10 @@ class DetailVideo(View):
             'categories': categories,
             'course_videos': course_videos,
         }
+
+        if pdf_file:
+            context['pdf_file'] = pdf_file
+
         return render(request, 'videos/detail_video.html', context)
 
     def post(self, request, pk, *args, **kwargs):
@@ -80,7 +90,7 @@ class DetailVideo(View):
 class UpdateVideo(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Video
     template_name = 'videos/create_video.html'
-    fields = ['title', 'description', 'lector']
+    fields = ['title', 'description', 'lector', 'pdf_file']
 
     def get_success_url(self):
         return reverse('video-detail', kwargs={'pk': self.object.pk})

@@ -20,10 +20,13 @@
 					<div class="col-md-6 text-muted">
 						<p>{{ object.date_posted | date:"M d, Y" }}</p>
                         {% if object.lector.pk %}
-                        <p><a class="link-text" href="{% url 'profile' object.lector.pk %}">{{ object.lector.surname }} {{ object.lector.name }} {{ object.lector.patronymic }}</a></p>
+                            <p><a class="link-text" href="{% url 'profile' object.lector.pk %}">{{ object.lector.surname }} {{ object.lector.name }} {{ object.lector.patronymic }}</a></p>
                         {% endif %}
                         {% if object.category.pk %}
-                        <a class="category-link" href="{% url 'category-list' object.category.pk %}">{{ object.category }}</a>
+                            <p><a class="category-link" href="{% url 'category-list' object.category.pk %}">{{ object.category }}</a></p>
+                        {% endif %}
+                        {% if pdf_file %}
+                            <p><a href="{{ pdf_file.url }}" download>Дополнительные материалы</a></p>
                         {% endif %}
 					</div>
 					<div class="col-md-6 text-muted text-right">

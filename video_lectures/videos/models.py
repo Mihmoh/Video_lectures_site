@@ -15,6 +15,8 @@ class Video(models.Model):
     date_posted = models.DateTimeField(default=timezone.now)
     category = models.ForeignKey('Category', on_delete=models.SET_NULL, null=True, blank=True)
     course = models.ForeignKey('Course', on_delete=models.SET_NULL, null=True, related_name='course_videos', blank=True)
+    pdf_file = models.FileField(upload_to='uploads/pdf_files', blank=True,
+                                validators=[FileExtensionValidator(allowed_extensions=['pdf'])])
 
     def __str__(self):
         return self.title
