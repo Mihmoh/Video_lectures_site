@@ -1,0 +1,5 @@
+recursive-include video_lectures *
+recursive-include videos *
+recursive-include profiles *
+recursive-include templates *
+include manage.py
