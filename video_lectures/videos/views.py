@@ -38,6 +38,14 @@ class CreateVideo(LoginRequiredMixin, CreateView):
 
 
 class DetailVideo(View):
+
+    video = None
+    form = None
+    comments = None
+    categories = None
+    course_videos = None
+    pdf_file = None
+    context = None
     def get(self, request, pk, *args, **kwargs):
         video = Video.objects.get(pk=pk)
         form = CommentForm()
@@ -113,6 +121,11 @@ class DeleteVideo(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 
 
 class VideoCategoryList(View):
+
+    category = None
+    videos = None
+    context = None
+
     def get(self, request, pk, *args, **kwargs):
         category = Category.objects.get(pk=pk)
         videos = Video.objects.filter(category=pk).order_by('-date_posted')
@@ -125,6 +138,14 @@ class VideoCategoryList(View):
 
 
 class SearchVideo(View):
+    query = None
+    query_video = None
+    query_courses = None
+    query_profiles = None
+    query_subjects = None
+    query_groups = None
+    context = None
+
     def get(self, request, *args, **kwargs):
         query = self.request.GET.get("q")
         query_video = Video.objects.filter(
@@ -170,6 +191,11 @@ class NotLectorView(TemplateView):
 
 
 class CourseView(View):
+    user = None
+    can_edit = None
+    course = None
+    videos = None
+    context = None
 
     def get(self, request, pk, *args, **kwargs):
         user = request.user

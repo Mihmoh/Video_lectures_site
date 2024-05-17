@@ -12,6 +12,13 @@ class ProfileListView(ListView):
     template_name = 'profiles/profiles_list.html'
     queryset = Profile.objects.all()
     context_object_name = 'profiles'
+    context = None
+
+    profiles = None
+
+    students = None
+    lectors = None
+    others = None
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -52,6 +59,13 @@ class SubjectListView(ListView):
 
 
 class ProfileView(View):
+    profile = None
+    videos = None
+    groups = None
+    subjects = None
+    courses = None
+    user_type = None
+    context = None
 
     def get(self, request, pk, *args, **kwargs):
         profile = get_object_or_404(Profile, pk=pk)
@@ -79,6 +93,12 @@ class ProfileView(View):
 
 
 class GroupView(View):
+    user = None
+    can_edit = False
+    group = None
+    students = None
+
+    context = {}
 
     def get(self, request, pk, *args, **kwargs):
         user = request.user
@@ -103,6 +123,13 @@ class GroupView(View):
 
 
 class SubjectView(View):
+    user = None
+    can_edit = False
+    subject = None
+    lectors = None
+    courses = None
+
+    context = {}
 
     def get(self, request, pk, *args, **kwargs):
         user = request.user

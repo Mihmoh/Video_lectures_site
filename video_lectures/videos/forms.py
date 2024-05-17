@@ -3,6 +3,7 @@ from .models import Video, Course
 from profiles.models import Profile
 
 
+
 class CommentForm(forms.Form):
     comment = forms.CharField(widget=forms.Textarea(
         attrs={
